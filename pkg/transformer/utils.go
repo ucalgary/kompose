@@ -113,7 +113,13 @@ func ConfigLabels(name string) map[string]string {
 }
 
 func ConfigLabelsWithService(name string, service kobject.ServiceConfig) map[string]string {
-	return map[string]string{Selector: name}
+	labels := map[string]string{}
+	for key, value := range service.Annotations {
+		labels[key] = value
+	}
+	labels["Selector"] = name
+
+	return labels
 }
 
 // ConfigAnnotations configures annotations
