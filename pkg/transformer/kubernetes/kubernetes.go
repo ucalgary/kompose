@@ -182,13 +182,13 @@ func (k *Kubernetes) InitRC(name string, service kobject.ServiceConfig, replicas
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name,
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Spec: api.ReplicationControllerSpec{
 			Replicas: int32(replicas),
 			Template: &api.PodTemplateSpec{
 				ObjectMeta: api.ObjectMeta{
-					Labels: transformer.ConfigLabels(name),
+					Labels: transformer.ConfigLabelsWithService(name, service),
 				},
 				Spec: k.InitPodSpec(name, service.Image),
 			},
@@ -206,10 +206,10 @@ func (k *Kubernetes) InitSvc(name string, service kobject.ServiceConfig) *api.Se
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name,
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Spec: api.ServiceSpec{
-			Selector: transformer.ConfigLabels(name),
+			Selector: transformer.ConfigLabelsWithService(name, service),
 		},
 	}
 	return svc
@@ -235,7 +235,7 @@ func (k *Kubernetes) InitConfigMapForEnv(name string, service kobject.ServiceCon
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name + "-" + envName,
-			Labels: transformer.ConfigLabels(name + "-" + envName),
+			Labels: transformer.ConfigLabelsWithService(name + "-" + envName, service),
 		},
 		Data: envs,
 	}
@@ -266,7 +266,7 @@ func (k *Kubernetes) InitConfigMapFromFile(name string, service kobject.ServiceC
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   FormatFileName(configMapName),
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Data: dataMap,
 	}
@@ -290,7 +290,7 @@ func (k *Kubernetes) InitD(name string, service kobject.ServiceConfig, replicas 
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name,
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Spec: extensions.DeploymentSpec{
 			Replicas: int32(replicas),
@@ -311,7 +311,7 @@ func (k *Kubernetes) InitDS(name string, service kobject.ServiceConfig) *extensi
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name,
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Spec: extensions.DaemonSetSpec{
 			Template: api.PodTemplateSpec{
@@ -331,7 +331,7 @@ func (k *Kubernetes) initIngress(name string, service kobject.ServiceConfig, por
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name,
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Spec: extensions.IngressSpec{
 			Rules: []extensions.IngressRule{
@@ -792,7 +792,7 @@ func (k *Kubernetes) InitPod(name string, service kobject.ServiceConfig) *api.Po
 		},
 		ObjectMeta: api.ObjectMeta{
 			Name:   name,
-			Labels: transformer.ConfigLabels(name),
+			Labels: transformer.ConfigLabelsWithService(name, service),
 		},
 		Spec: k.InitPodSpec(name, service.Image),
 	}

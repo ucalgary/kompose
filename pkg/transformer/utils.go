@@ -112,6 +112,10 @@ func ConfigLabels(name string) map[string]string {
 	return map[string]string{Selector: name}
 }
 
+func ConfigLabelsWithService(name string, service kobject.ServiceConfig) map[string]string {
+	return map[string]string{Selector: name}
+}
+
 // ConfigAnnotations configures annotations
 func ConfigAnnotations(service kobject.ServiceConfig) map[string]string {
 	annotations := map[string]string{}
