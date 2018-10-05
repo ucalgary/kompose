@@ -112,6 +112,18 @@ func ConfigLabels(name string) map[string]string {
 	return map[string]string{Selector: name}
 }
 
+func ConfigLabelsWithService(name string, service kobject.ServiceConfig) map[string]string {
+	labels := map[string]string{}
+	for key, value := range service.Annotations {
+		if strings.HasPrefix(key, "kompose.label.") {
+			labels[key[14:]] = value
+		}
+	}
+	labels["Selector"] = name
+
+	return labels
+}
+
 // ConfigAnnotations configures annotations
 func ConfigAnnotations(service kobject.ServiceConfig) map[string]string {
 	annotations := map[string]string{}

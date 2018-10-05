@@ -304,8 +304,8 @@ func TestKomposeConvert(t *testing.T) {
 
 		var foundSVC, foundD, foundDS, foundRC, foundDC bool
 		name := "app"
-		labels := transformer.ConfigLabels(name)
 		config := test.komposeObject.ServiceConfigs[name]
+		labels := transformer.ConfigLabelsWithService(name, config)
 		// Check results
 		for _, obj := range objs {
 			if svc, ok := obj.(*api.Service); ok {
