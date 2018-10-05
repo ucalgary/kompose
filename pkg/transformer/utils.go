@@ -115,7 +115,9 @@ func ConfigLabels(name string) map[string]string {
 func ConfigLabelsWithService(name string, service kobject.ServiceConfig) map[string]string {
 	labels := map[string]string{}
 	for key, value := range service.Annotations {
-		labels[key] = value
+		if strings.HasPrefix(key, "kompose.label.") {
+			labels[key[14:]] = value
+		}
 	}
 	labels["Selector"] = name
 
